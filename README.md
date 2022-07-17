@@ -68,6 +68,14 @@ api.aro		A	60	52.186.41.77
 PING ns1-02.azure-dns.com (40.90.4.2) 56(84) bytes of data.
 ```
 
+**Add the IP for egress allow for LB in specific project**
+```
+oc get svc -o wide | grep LoadBalancer
+noobaa-mgmt                                       LoadBalancer   172.30.179.144   20.241.129.119   80:30323/TCP,443:31915/TCP,8445:31436/TCP,8446:32455/TCP   84m   noobaa-mgmt=noobaa
+s3                                                LoadBalancer   172.30.29.5      20.124.55.244    80:31653/TCP,443:30543/TCP,8444:32275/TCP,7004:32073/TCP   84m   noobaa-s3=noobaa
+
+```
+
 ```
 # vim egress.yaml
 
@@ -76,7 +84,7 @@ kind: EgressNetworkPolicy
 metadata:
   name: default
 spec:
-  egress: 
+  egress:
   - type: Allow
     to:
       cidrSelector: 172.30.0.0/16
@@ -85,13 +93,19 @@ spec:
       cidrSelector: 10.128.0.0/14
   - type: Allow
     to:
-      cidrSelector: 52.186.41.77/32
+      cidrSelector: 20.241.130.172/32
   - type: Allow
     to:
-      cidrSelector: 20.81.59.208/32
+      cidrSelector: 20.124.167.106/32
   - type: Allow
     to:
       cidrSelector: 20.55.122.255/32
+  - type: Allow
+    to:
+      cidrSelector: 20.241.129.119/32
+  - type: Allow
+    to:
+      cidrSelector: 20.124.55.244/32
   - type: Allow
     to:
       dnsName: quay.example.opentlc.com
@@ -102,8 +116,7 @@ spec:
     to:
       cidrSelector: 0.0.0.0/0
 
-# oc new-project odf-01
 
-# oc apply -f egress.yaml -n odf-01
+# oc apply -f egress.yaml -n openshift-storage
 
 ```
