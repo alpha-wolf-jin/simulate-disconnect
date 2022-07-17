@@ -48,4 +48,17 @@ search kiznb3lgbitelmvyuorbtnweaa.bx.internal.cloudapp.net
 nameserver 168.63.129.16
 ```
 
+**DNS Setting**
+```
+@		NS	172800	ns1-02.azure-dns.com.
+
+api.aro		A	60	52.186.41.77
+*.apps.aro	A	300	20.81.59.208
+```
+
+```
+[jinzhang@localhost ~]$ ping ns1-02.azure-dns.com
+PING ns1-02.azure-dns.com (40.90.4.2) 56(84) bytes of data.
+```
+
 
